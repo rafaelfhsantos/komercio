@@ -1,6 +1,6 @@
 # komercio
 
-API: [Kenzie Hub](https://komercio-rafael-santos.herokuapp.com/api/)
+API: [Komercio](https://komercio-rafael-santos.herokuapp.com/api/)
 
 [Documentação](https://komercio-rafael-santos.herokuapp.com/api/docs)
 

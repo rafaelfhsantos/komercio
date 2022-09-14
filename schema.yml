@@ -1,0 +1,843 @@
+openapi: 3.0.3
+info:
+  title: Komercio
+  version: "1.0"
+  description: Aplicação de gerenciamento de vendedores e seus produtos.
+paths:
+  /api/accounts/:
+    get:
+      operationId: api_accounts_list
+      parameters:
+        - name: page
+          required: false
+          in: query
+          description: A page number within the paginated result set.
+          schema:
+            type: integer
+      tags:
+        - api
+      security:
+        - cookieAuth: []
+        - basicAuth: []
+        - {}
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PaginatedUserList"
+          description: ""
+    post:
+      operationId: api_accounts_create
+      tags:
+        - api
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/User"
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: "#/components/schemas/User"
+          multipart/form-data:
+            schema:
+              $ref: "#/components/schemas/User"
+        required: true
+      security:
+        - cookieAuth: []
+        - basicAuth: []
+        - {}
+      responses:
+        "201":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/User"
+          description: ""
+  /api/accounts/{id}/:
+    # put:
+    #   operationId: api_accounts_update
+    #   parameters:
+    #   - in: path
+    #     name: id
+    #     schema:
+    #       type: string
+    #       format: uuid
+    #     required: true
+    #   tags:
+    #   - api
+    #   requestBody:
+    #     content:
+    #       application/json:
+    #         schema:
+    #           $ref: '#/components/schemas/User'
+    #       application/x-www-form-urlencoded:
+    #         schema:
+    #           $ref: '#/components/schemas/User'
+    #       multipart/form-data:
+    #         schema:
+    #           $ref: '#/components/schemas/User'
+    #     required: true
+    #   security:
+    #   - tokenAuth: []
+    #   responses:
+    #     '200':
+    #       content:
+    #         application/json:
+    #           schema:
+    #             $ref: '#/components/schemas/User'
+    #       description: ''
+    patch:
+      operationId: api_accounts_partial_update
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: string
+            format: uuid
+          required: true
+      tags:
+        - api
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/PatchedUser"
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: "#/components/schemas/PatchedUser"
+          multipart/form-data:
+            schema:
+              $ref: "#/components/schemas/PatchedUser"
+      security:
+        - tokenAuth: []
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/User"
+          description: ""
+  /api/accounts/{id}/management/:
+    # put:
+    #   operationId: api_accounts_management_update
+    #   parameters:
+    #     - in: path
+    #       name: id
+    #       schema:
+    #         type: string
+    #         format: uuid
+    #       required: true
+    #   tags:
+    #     - api
+    #   requestBody:
+    #     content:
+    #       application/json:
+    #         schema:
+    #           $ref: "#/components/schemas/UserManagement"
+    #       application/x-www-form-urlencoded:
+    #         schema:
+    #           $ref: "#/components/schemas/UserManagement"
+    #       multipart/form-data:
+    #         schema:
+    #           $ref: "#/components/schemas/UserManagement"
+    #   security:
+    #     - tokenAuth: []
+    #   responses:
+    #     "200":
+    #       content:
+    #         application/json:
+    #           schema:
+    #             $ref: "#/components/schemas/UserManagement"
+    #       description: ""
+    patch:
+      operationId: api_accounts_management_partial_update
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: string
+            format: uuid
+          required: true
+      tags:
+        - api
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/PatchedUserManagement"
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: "#/components/schemas/PatchedUserManagement"
+          multipart/form-data:
+            schema:
+              $ref: "#/components/schemas/PatchedUserManagement"
+      security:
+        - tokenAuth: []
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UserManagement"
+          description: ""
+  /api/accounts/newest/{num}/:
+    get:
+      operationId: api_accounts_newest_list
+      parameters:
+        - in: path
+          name: num
+          schema:
+            type: integer
+          required: true
+        - name: page
+          required: false
+          in: query
+          description: A page number within the paginated result set.
+          schema:
+            type: integer
+      tags:
+        - api
+      security:
+        - cookieAuth: []
+        - basicAuth: []
+        - {}
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PaginatedUserList"
+          description: ""
+  /api/login/:
+    post:
+      operationId: api_login_create
+      tags:
+        - api
+      requestBody:
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: "#/components/schemas/AuthToken"
+          multipart/form-data:
+            schema:
+              $ref: "#/components/schemas/AuthToken"
+          application/json:
+            schema:
+              $ref: "#/components/schemas/AuthToken"
+        required: true
+      security:
+        - cookieAuth: []
+        - basicAuth: []
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AuthToken"
+          description: ""
+  /api/products/:
+    get:
+      operationId: api_products_list
+      parameters:
+        - name: page
+          required: false
+          in: query
+          description: A page number within the paginated result set.
+          schema:
+            type: integer
+      tags:
+        - api
+      security:
+        - tokenAuth: []
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PaginatedProductList"
+          description: ""
+    post:
+      operationId: api_products_create
+      tags:
+        - api
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ProductDetail"
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: "#/components/schemas/ProductDetail"
+          multipart/form-data:
+            schema:
+              $ref: "#/components/schemas/ProductDetail"
+        required: true
+      security:
+        - tokenAuth: []
+      responses:
+        "201":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ProductDetail"
+          description: ""
+  /api/products/{id}/:
+    get:
+      operationId: api_products_retrieve
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: string
+            format: uuid
+          description: A UUID string identifying this product.
+          required: true
+      tags:
+        - api
+      security:
+        - tokenAuth: []
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ProductDetail"
+          description: ""
+    # put:
+    #   operationId: api_products_update
+    #   parameters:
+    #     - in: path
+    #       name: id
+    #       schema:
+    #         type: string
+    #         format: uuid
+    #       description: A UUID string identifying this product.
+    #       required: true
+    #   tags:
+    #     - api
+    #   requestBody:
+    #     content:
+    #       application/json:
+    #         schema:
+    #           $ref: "#/components/schemas/ProductDetail"
+    #       application/x-www-form-urlencoded:
+    #         schema:
+    #           $ref: "#/components/schemas/ProductDetail"
+    #       multipart/form-data:
+    #         schema:
+    #           $ref: "#/components/schemas/ProductDetail"
+    #     required: true
+    #   security:
+    #     - tokenAuth: []
+    #   responses:
+    #     "200":
+    #       content:
+    #         application/json:
+    #           schema:
+    #             $ref: "#/components/schemas/ProductDetail"
+    #       description: ""
+    patch:
+      operationId: api_products_partial_update
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: string
+            format: uuid
+          description: A UUID string identifying this product.
+          required: true
+      tags:
+        - api
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/PatchedProductDetail"
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: "#/components/schemas/PatchedProductDetail"
+          multipart/form-data:
+            schema:
+              $ref: "#/components/schemas/PatchedProductDetail"
+      security:
+        - tokenAuth: []
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ProductDetail"
+          description: ""
+  /schema/:
+    get:
+      operationId: schema_retrieve
+      description: |-
+        OpenApi3 schema for this API. Format can be selected via content negotiation.
+
+        - YAML: application/vnd.oai.openapi
+        - JSON: application/vnd.oai.openapi+json
+      parameters:
+        - in: query
+          name: format
+          schema:
+            type: string
+            enum:
+              - json
+              - yaml
+        - in: query
+          name: lang
+          schema:
+            type: string
+            enum:
+              - af
+              - ar
+              - ar-dz
+              - ast
+              - az
+              - be
+              - bg
+              - bn
+              - br
+              - bs
+              - ca
+              - cs
+              - cy
+              - da
+              - de
+              - dsb
+              - el
+              - en
+              - en-au
+              - en-gb
+              - eo
+              - es
+              - es-ar
+              - es-co
+              - es-mx
+              - es-ni
+              - es-ve
+              - et
+              - eu
+              - fa
+              - fi
+              - fr
+              - fy
+              - ga
+              - gd
+              - gl
+              - he
+              - hi
+              - hr
+              - hsb
+              - hu
+              - hy
+              - ia
+              - id
+              - ig
+              - io
+              - is
+              - it
+              - ja
+              - ka
+              - kab
+              - kk
+              - km
+              - kn
+              - ko
+              - ky
+              - lb
+              - lt
+              - lv
+              - mk
+              - ml
+              - mn
+              - mr
+              - ms
+              - my
+              - nb
+              - ne
+              - nl
+              - nn
+              - os
+              - pa
+              - pl
+              - pt
+              - pt-br
+              - ro
+              - ru
+              - sk
+              - sl
+              - sq
+              - sr
+              - sr-latn
+              - sv
+              - sw
+              - ta
+              - te
+              - tg
+              - th
+              - tk
+              - tr
+              - tt
+              - udm
+              - uk
+              - ur
+              - uz
+              - vi
+              - zh-hans
+              - zh-hant
+      tags:
+        - schema
+      security:
+        - cookieAuth: []
+        - basicAuth: []
+        - {}
+      responses:
+        "200":
+          content:
+            application/vnd.oai.openapi:
+              schema:
+                type: object
+                additionalProperties: {}
+            application/yaml:
+              schema:
+                type: object
+                additionalProperties: {}
+            application/vnd.oai.openapi+json:
+              schema:
+                type: object
+                additionalProperties: {}
+            application/json:
+              schema:
+                type: object
+                additionalProperties: {}
+          description: ""
+components:
+  schemas:
+    AuthToken:
+      type: object
+      properties:
+        username:
+          type: string
+          writeOnly: true
+        password:
+          type: string
+          writeOnly: true
+        token:
+          type: string
+          readOnly: true
+      required:
+        - password
+        - token
+        - username
+    PaginatedProductList:
+      type: object
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: "#/components/schemas/Product"
+    PaginatedUserList:
+      type: object
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: "#/components/schemas/User"
+    PatchedProductDetail:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+        description:
+          type: string
+        seller:
+          allOf:
+            - $ref: "#/components/schemas/User"
+          readOnly: true
+        price:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,8}(?:\.\d{0,2})?$
+        quantity:
+          type: integer
+          maximum: 2147483647
+          minimum: 0
+        is_active:
+          type: boolean
+          readOnly: true
+    PatchedUser:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+        username:
+          type: string
+          maxLength: 50
+        password:
+          type: string
+          writeOnly: true
+          maxLength: 128
+        first_name:
+          type: string
+          maxLength: 50
+        last_name:
+          type: string
+          maxLength: 50
+        is_seller:
+          type: boolean
+        date_joined:
+          type: string
+          format: date-time
+          readOnly: true
+        is_active:
+          type: boolean
+          readOnly: true
+          title: Active
+          description:
+            Designates whether this user should be treated as active. Unselect
+            this instead of deleting accounts.
+        is_superuser:
+          type: boolean
+          readOnly: true
+          title: Superuser status
+          description:
+            Designates that this user has all permissions without explicitly
+            assigning them.
+    PatchedUserManagement:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+        username:
+          type: string
+          readOnly: true
+        first_name:
+          type: string
+          readOnly: true
+        last_name:
+          type: string
+          readOnly: true
+        is_seller:
+          type: boolean
+          readOnly: true
+        date_joined:
+          type: string
+          format: date-time
+          readOnly: true
+        is_active:
+          type: boolean
+          title: Active
+          description:
+            Designates whether this user should be treated as active. Unselect
+            this instead of deleting accounts.
+        is_superuser:
+          type: boolean
+          readOnly: true
+          title: Superuser status
+          description:
+            Designates that this user has all permissions without explicitly
+            assigning them.
+    Product:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+        description:
+          type: string
+          readOnly: true
+        seller:
+          type: string
+          format: uuid
+          readOnly: true
+        price:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,8}(?:\.\d{0,2})?$
+          readOnly: true
+        quantity:
+          type: integer
+          readOnly: true
+        is_active:
+          type: boolean
+          readOnly: true
+      required:
+        - description
+        - id
+        - is_active
+        - price
+        - quantity
+        - seller
+    ProductDetail:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+        description:
+          type: string
+        seller:
+          allOf:
+            - $ref: "#/components/schemas/User"
+          readOnly: true
+        price:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,8}(?:\.\d{0,2})?$
+        quantity:
+          type: integer
+          maximum: 2147483647
+          minimum: 0
+        is_active:
+          type: boolean
+          readOnly: true
+      required:
+        - description
+        - id
+        - is_active
+        - price
+        - quantity
+        - seller
+    User:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+        username:
+          type: string
+          maxLength: 50
+        password:
+          type: string
+          writeOnly: true
+          maxLength: 128
+        first_name:
+          type: string
+          maxLength: 50
+        last_name:
+          type: string
+          maxLength: 50
+        is_seller:
+          type: boolean
+        date_joined:
+          type: string
+          format: date-time
+          readOnly: true
+        is_active:
+          type: boolean
+          readOnly: true
+          title: Active
+          description:
+            Designates whether this user should be treated as active. Unselect
+            this instead of deleting accounts.
+        is_superuser:
+          type: boolean
+          readOnly: true
+          title: Superuser status
+          description:
+            Designates that this user has all permissions without explicitly
+            assigning them.
+      required:
+        - date_joined
+        - first_name
+        - id
+        - is_active
+        - is_seller
+        - is_superuser
+        - last_name
+        - password
+        - username
+    UserManagement:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+        username:
+          type: string
+          readOnly: true
+        first_name:
+          type: string
+          readOnly: true
+        last_name:
+          type: string
+          readOnly: true
+        is_seller:
+          type: boolean
+          readOnly: true
+        date_joined:
+          type: string
+          format: date-time
+          readOnly: true
+        is_active:
+          type: boolean
+          title: Active
+          description:
+            Designates whether this user should be treated as active. Unselect
+            this instead of deleting accounts.
+        is_superuser:
+          type: boolean
+          readOnly: true
+          title: Superuser status
+          description:
+            Designates that this user has all permissions without explicitly
+            assigning them.
+      required:
+        - date_joined
+        - first_name
+        - id
+        - is_seller
+        - is_superuser
+        - last_name
+        - username
+  securitySchemes:
+    basicAuth:
+      type: http
+      scheme: basic
+    cookieAuth:
+      type: apiKey
+      in: cookie
+      name: sessionid
+    tokenAuth:
+      type: apiKey
+      in: header
+      name: Authorization
+      description: Token-based authentication with required prefix "Token"
